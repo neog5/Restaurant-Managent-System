@@ -183,7 +183,7 @@ public class AddInMenu extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "Hetam123$");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
                 PreparedStatement ps = con.prepareStatement("INSERT INTO menu VALUES(?, ?, ?, ?)");
                 ps.setString(1, dishId);
                 ps.setString(2, dish);
