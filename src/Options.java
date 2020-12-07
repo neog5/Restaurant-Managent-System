@@ -1,3 +1,6 @@
+
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -194,6 +197,9 @@ public class Options extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Not welcome");
+        new LoginPage().setVisible(true);
+        this.dispose();//to close the current jframe
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
