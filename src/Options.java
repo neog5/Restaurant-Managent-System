@@ -84,7 +84,7 @@ public class Options extends javax.swing.JFrame {
         });
 
         jButton2.setFont(new java.awt.Font("Poppins Medium", 0, 20)); // NOI18N
-        jButton2.setText("Employees");
+        jButton2.setText("Menu");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
