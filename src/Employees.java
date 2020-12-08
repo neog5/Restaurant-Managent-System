@@ -1,3 +1,8 @@
+
+import java.sql.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -44,10 +49,7 @@ public class Employees extends javax.swing.JFrame {
         jTable1.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Employee ID", "Name", "Designation", "Date Of Birth", "Address", "Phone Number", "Salary"
@@ -81,7 +83,6 @@ public class Employees extends javax.swing.JFrame {
         jTextField1.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(204, 204, 204));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField1.setText("Search Employee By Name");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -167,10 +168,51 @@ public class Employees extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String name = jTextField1.getText();
+        
+        DefaultTableModel model = (DefaultTableModel)
+        jTable1.getModel();
+        if(name.isEmpty())  {
+            //jTable1.setRowText("");
+            JOptionPane.showMessageDialog(this,"Please enter name");
+        }   else    {
+            
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM employees WHERE name = ?");
+                ps.setString(1, name);
+                ResultSet rs = ps.executeQuery();
+                
+                while(rs.next())   {
+                    String empId = rs.getString("empID");
+                    String nam = rs.getString("name");
+                    String dob = rs.getString("dob");
+                    String ph = rs.getString("ph");
+                    String add = rs.getString("address");
+                    String des = rs.getString("desig");
+                    //int sal = rs.getInt("sal");
+                    String s = rs.getString("salary");
+                    
+                    model.addRow(new Object[] {empId, nam, des, dob, add, ph, s});
+                }
+            } catch (SQLException ex) {
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Driver not initialized : ");
+            System.out.println(ex);
+        }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        new Options().setVisible(true);
+        this.dispose();//to close the current jframe
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -179,6 +221,8 @@ public class Employees extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        new InsertEmployee().setVisible(true);
+        this.dispose();//to close the current jframe
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
