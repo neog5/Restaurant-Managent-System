@@ -2,6 +2,7 @@
 import java.sql.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,7 +15,6 @@ import javax.swing.table.DefaultTableModel;
  * @author jatin
  */
 public class Employees extends javax.swing.JFrame {
-
     /**
      * Creates new form Employees
      */
@@ -54,7 +54,37 @@ public class Employees extends javax.swing.JFrame {
             new String [] {
                 "Employee ID", "Name", "Designation", "Date Of Birth", "Address", "Phone Number", "Salary"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        int i = 3;
+        String m = "YO";
+        while(i != 0)  {
+            i--;
+            jTable1.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+                    {m, m, m, m, m, m, m, null}
+                },
+                new String [] {
+                    "Employee ID", "Name", "Designation", "Date Of Birth", "Address", "Phone Number", "Salary", "Select"
+                }
+            ) {
+                Class[] types = new Class [] {
+                    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                };
+
+                public Class getColumnClass(int columnIndex) {
+                    return types [columnIndex];
+                }
+            });
+
+        }
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("Poppins", 1, 36)); // NOI18N
@@ -172,6 +202,12 @@ public class Employees extends javax.swing.JFrame {
         
         DefaultTableModel model = (DefaultTableModel)
         jTable1.getModel();
+        int rows=model.getRowCount();
+        if (rows>0) {
+            for (int i=0; i<rows; i++)
+            model.removeRow(0);  // To remove all rows from
+        }
+
         if(name.isEmpty())  {
             //jTable1.setRowText("");
             JOptionPane.showMessageDialog(this,"Please enter name");
@@ -259,11 +295,11 @@ public class Employees extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Employees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Employees().setVisible(true);
+                new Employees().setVisible(true);               
             }
         });
     }
@@ -278,7 +314,7 @@ public class Employees extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
+    public static javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
