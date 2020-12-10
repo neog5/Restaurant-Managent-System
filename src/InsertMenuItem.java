@@ -1,3 +1,11 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -66,13 +74,18 @@ public class InsertMenuItem extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel6.setText("Item Category :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starters", "Seafood", "Mains", "Specials", "Rice", "Bread", "Desserts", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Select-", "Starters", "Seafood", "Mains", "Specials", "Rice", "Bread", "Desserts" }));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel7.setText("Rate :");
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton1.setText("Insert");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -142,6 +155,79 @@ public class InsertMenuItem extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String itemId = jTextField2.getText();
+        int cat = jComboBox1.getSelectedIndex();
+        String cate = new String();
+        if(itemId.isEmpty())    {
+            JOptionPane.showMessageDialog(this,"Please enter an Item ID");
+        }
+        switch(cat) {
+            case 0: 
+                JOptionPane.showMessageDialog(this, "Please select a category");
+                break;
+            
+            case 1:
+                cate = "Starters";
+                break;
+            
+            case 2:
+                cate = "Seafood";
+                break;
+            
+            case 3:
+                cate = "Mains";
+                break;
+            
+            case 4:
+                cate = "Specials";
+                break;
+            
+            case 5:
+                cate = "Rice";
+                break;
+            
+            case 6:
+                cate = "Bread";
+                break;
+                
+            case 7:
+                cate = "Desserts";
+                break;
+            
+                
+        }
+        String name = jTextField3.getText();
+        if(name.isEmpty())    {
+            JOptionPane.showMessageDialog(this,"Please enter a name");
+        }
+        String price = jTextField1.getText();
+        if(itemId.isEmpty())    {
+            JOptionPane.showMessageDialog(this,"Please enter Price");
+        }
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("INSERT INTO menu VALUES(?, ?, ?, ?)");
+                ps.setString(1, itemId);
+                ps.setString(4, cate);
+                ps.setString(2, name);
+                ps.setString(3, price);
+                ps.execute();
+                
+            } catch (SQLException ex) {
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Driver not initialized : ");
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
