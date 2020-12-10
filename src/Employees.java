@@ -1,5 +1,7 @@
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -20,6 +22,40 @@ public class Employees extends javax.swing.JFrame {
      */
     public Employees() {
         initComponents();
+        tableRefresh();
+    }
+    
+    public void tableRefresh() {
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM employees");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next())   {
+                    String empId = rs.getString("empID");
+                    String nam = rs.getString("name");
+                    String dob = rs.getString("dob");
+                    String ph = rs.getString("ph");
+                    String add = rs.getString("address");
+                    String des = rs.getString("desig");
+                    //int sal = rs.getInt("sal");
+                    String s = rs.getString("salary");
+                    
+                    model.addRow(new Object[] {empId, nam, des, dob, add, ph, s, false});
+                }
+                        
+            } catch (SQLException ex) {
+                Logger.getLogger(Employees.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Employees.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -52,39 +88,24 @@ public class Employees extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Employee ID", "Name", "Designation", "Date Of Birth", "Address", "Phone Number", "Salary"
+                "Employee ID", "Name", "Designation", "Date Of Birth", "Address", "Phone Number", "Salary", "Select"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true, true, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        int i = 3;
-        String m = "YO";
-        while(i != 0)  {
-            i--;
-            jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                    {m, m, m, m, m, m, m, null}
-                },
-                new String [] {
-                    "Employee ID", "Name", "Designation", "Date Of Birth", "Address", "Phone Number", "Salary", "Select"
-                }
-            ) {
-                Class[] types = new Class [] {
-                    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
-                };
-
-                public Class getColumnClass(int columnIndex) {
-                    return types [columnIndex];
-                }
-            });
-
-        }
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("Poppins", 1, 36)); // NOI18N
@@ -198,7 +219,7 @@ public class Employees extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String name = jTextField1.getText();
+        String name =  jTextField1.getText();
         
         DefaultTableModel model = (DefaultTableModel)
         jTable1.getModel();
@@ -207,7 +228,7 @@ public class Employees extends javax.swing.JFrame {
             for (int i=0; i<rows; i++)
             model.removeRow(0);  // To remove all rows from
         }
-
+        
         if(name.isEmpty())  {
             //jTable1.setRowText("");
             JOptionPane.showMessageDialog(this,"Please enter name");
@@ -219,8 +240,8 @@ public class Employees extends javax.swing.JFrame {
             
             try {
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
-                PreparedStatement ps = con.prepareStatement("SELECT * FROM employees WHERE name = ?");
-                ps.setString(1, name);
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM employees WHERE name LIKE ?");
+                ps.setString(1, "%" + name + "%");
                 ResultSet rs = ps.executeQuery();
                 
                 while(rs.next())   {
@@ -233,7 +254,7 @@ public class Employees extends javax.swing.JFrame {
                     //int sal = rs.getInt("sal");
                     String s = rs.getString("salary");
                     
-                    model.addRow(new Object[] {empId, nam, des, dob, add, ph, s});
+                    model.addRow(new Object[] {empId, nam, des, dob, add, ph, s, false});
                 }
             } catch (SQLException ex) {
             }
@@ -263,10 +284,114 @@ public class Employees extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("DELETE FROM employees WHERE empID = ?");
+                
+                boolean r = false;
+                for(int i=0;i<jTable1.getRowCount();i++)  {
+                    Boolean x = Boolean.valueOf(jTable1.getValueAt(i, 7).toString());
+            
+                    if(x)   {
+                        r = true;
+                        break;
+                    }
+                }
+                
+                if(!r)  {
+                    JOptionPane.showMessageDialog(this,"Please select a record");
+                }
+                else    {
+                
+                int result = JOptionPane.showConfirmDialog(this,"Sure? You want to Delete?", "Swing Tester",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                if(result == JOptionPane.YES_OPTION){
+                for(int i=0;i<jTable1.getRowCount();i++)  {
+                    Boolean x = Boolean.valueOf(jTable1.getValueAt(i, 7).toString());
+            
+                    if(x)   {
+                        String k = jTable1.getValueAt(i, 0).toString();
+                        ps.setString(1, k);
+                        
+                        ps.execute();
+                    }
+                }
+                tableRefresh();
+                }
+                }
+                        
+            } catch (SQLException ex) {
+                Logger.getLogger(Employees.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Employees.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("UPDATE employees SET ph = ?, address = ?, desig = ?, salary = ? WHERE empID = ?");
+                
+                boolean r = false;
+                for(int i=0;i<jTable1.getRowCount();i++)  {
+                    Boolean x = Boolean.valueOf(jTable1.getValueAt(i, 7).toString());
+            
+                    if(x)   {
+                        r = true;
+                        break;
+                    }
+                }
+                
+                if(!r)  {
+                    JOptionPane.showMessageDialog(this,"Please select a record");
+                }
+                else    {
+                
+                int result = JOptionPane.showConfirmDialog(this,"Sure? You want to Update?", "Swing Tester",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                if(result == JOptionPane.YES_OPTION){
+                for(int i=0;i<jTable1.getRowCount();i++)  {
+                    Boolean x = Boolean.valueOf(jTable1.getValueAt(i, 7).toString());
+            
+                    if(x)   {
+                        String k = jTable1.getValueAt(i, 0).toString();
+                        ps.setString(5, k);
+                        
+                        String des = jTable1.getValueAt(i, 2).toString();
+                        ps.setString(3, des);
+                        
+                        String add = jTable1.getValueAt(i, 4).toString();
+                        ps.setString(2, add);
+                        
+                        String ph = jTable1.getValueAt(i, 5).toString();
+                        ps.setString(1, ph);
+                        
+                        String sal = jTable1.getValueAt(i, 6).toString();
+                        ps.setString(4, sal);
+                        
+                        
+                        ps.execute();
+                    }
+                }
+                tableRefresh();
+                }
+                }
+                        
+            } catch (SQLException ex) {
+                Logger.getLogger(Employees.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Employees.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
