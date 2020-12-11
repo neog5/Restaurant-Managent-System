@@ -95,7 +95,7 @@ public class Employees extends javax.swing.JFrame {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true, true, true, true, true
+                false, false, true, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
