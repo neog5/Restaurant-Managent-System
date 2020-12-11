@@ -26,26 +26,29 @@ public class Feedback extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
         jButton4 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
-        jCheckBox8 = new javax.swing.JCheckBox();
-        jCheckBox13 = new javax.swing.JCheckBox();
-        jCheckBox14 = new javax.swing.JCheckBox();
-        jCheckBox15 = new javax.swing.JCheckBox();
-        jCheckBox16 = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jCheckBox9 = new javax.swing.JCheckBox();
-        jCheckBox10 = new javax.swing.JCheckBox();
-        jCheckBox11 = new javax.swing.JCheckBox();
-        jCheckBox12 = new javax.swing.JCheckBox();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jRadioButton4 = new javax.swing.JRadioButton();
+        jRadioButton5 = new javax.swing.JRadioButton();
+        jRadioButton6 = new javax.swing.JRadioButton();
+        jRadioButton7 = new javax.swing.JRadioButton();
+        jRadioButton8 = new javax.swing.JRadioButton();
+        jRadioButton9 = new javax.swing.JRadioButton();
+        jRadioButton10 = new javax.swing.JRadioButton();
+        jRadioButton11 = new javax.swing.JRadioButton();
+        jRadioButton12 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Feedback");
@@ -69,32 +72,6 @@ public class Feedback extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox5.setText("Excellent");
-        jCheckBox5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox5ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox6.setText("Good");
-
-        jCheckBox7.setText("Fair");
-
-        jCheckBox8.setText("Poor");
-
-        jCheckBox13.setText("Excellent");
-        jCheckBox13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox13ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox14.setText("Good");
-
-        jCheckBox15.setText("Fair");
-
-        jCheckBox16.setText("Poor");
-
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel5.setText("Food Quality :");
 
@@ -113,18 +90,101 @@ public class Feedback extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox9.setText("Excellent");
-        jCheckBox9.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("Excellent");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox9ActionPerformed(evt);
+                jRadioButton1ActionPerformed(evt);
             }
         });
 
-        jCheckBox10.setText("Good");
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("Good");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
+            }
+        });
 
-        jCheckBox11.setText("Fair");
+        buttonGroup1.add(jRadioButton3);
+        jRadioButton3.setText("Fair");
+        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton3ActionPerformed(evt);
+            }
+        });
 
-        jCheckBox12.setText("Poor");
+        buttonGroup1.add(jRadioButton4);
+        jRadioButton4.setText("Poor");
+        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton4ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup2.add(jRadioButton5);
+        jRadioButton5.setText("Excellent");
+        jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton5ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup2.add(jRadioButton6);
+        jRadioButton6.setText("Good");
+        jRadioButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton6ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup2.add(jRadioButton7);
+        jRadioButton7.setText("Fair");
+        jRadioButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton7ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup2.add(jRadioButton8);
+        jRadioButton8.setText("Poor");
+        jRadioButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton8ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup3.add(jRadioButton9);
+        jRadioButton9.setText("Excellent");
+        jRadioButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton9ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup3.add(jRadioButton10);
+        jRadioButton10.setText("Good");
+        jRadioButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton10ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup3.add(jRadioButton11);
+        jRadioButton11.setText("Fair");
+        jRadioButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton11ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup3.add(jRadioButton12);
+        jRadioButton12.setText("Poor");
+        jRadioButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton12ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -142,33 +202,34 @@ public class Feedback extends javax.swing.JFrame {
                                 .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jLabel8))
                         .addGap(47, 47, 47)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jRadioButton1)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jRadioButton2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jRadioButton3)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jRadioButton4))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jRadioButton5)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jRadioButton6)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jRadioButton7)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jRadioButton8)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCheckBox13)
+                                .addComponent(jRadioButton9)
                                 .addGap(18, 18, 18)
-                                .addComponent(jCheckBox14)
+                                .addComponent(jRadioButton10)
                                 .addGap(18, 18, 18)
-                                .addComponent(jCheckBox15)
+                                .addComponent(jRadioButton11)
                                 .addGap(18, 18, 18)
-                                .addComponent(jCheckBox16))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCheckBox5)
-                                .addGap(18, 18, 18)
-                                .addComponent(jCheckBox6)
-                                .addGap(18, 18, 18)
-                                .addComponent(jCheckBox7)
-                                .addGap(18, 18, 18)
-                                .addComponent(jCheckBox8))
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCheckBox9)
-                                .addGap(18, 18, 18)
-                                .addComponent(jCheckBox10)
-                                .addGap(18, 18, 18)
-                                .addComponent(jCheckBox11)
-                                .addGap(18, 18, 18)
-                                .addComponent(jCheckBox12))))
+                                .addComponent(jRadioButton12))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
@@ -179,38 +240,40 @@ public class Feedback extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jRadioButton1)
+                            .addComponent(jRadioButton2)
+                            .addComponent(jRadioButton3)
+                            .addComponent(jRadioButton4))
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel6))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jCheckBox9)
-                        .addComponent(jCheckBox10)
-                        .addComponent(jCheckBox11)
-                        .addComponent(jCheckBox12)))
+                        .addComponent(jRadioButton5)
+                        .addComponent(jRadioButton6)
+                        .addComponent(jRadioButton7)
+                        .addComponent(jRadioButton8)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox5)
-                    .addComponent(jCheckBox6)
-                    .addComponent(jCheckBox7)
-                    .addComponent(jCheckBox8)
-                    .addComponent(jLabel6))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox13)
-                    .addComponent(jCheckBox14)
-                    .addComponent(jCheckBox15)
-                    .addComponent(jCheckBox16)
-                    .addComponent(jLabel7))
+                    .addComponent(jLabel7)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jRadioButton9)
+                        .addComponent(jRadioButton10)
+                        .addComponent(jRadioButton11)
+                        .addComponent(jRadioButton12)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -220,14 +283,6 @@ public class Feedback extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox5ActionPerformed
-
-    private void jCheckBox13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox13ActionPerformed
-
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
@@ -236,9 +291,53 @@ public class Feedback extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jCheckBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox9ActionPerformed
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox9ActionPerformed
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton3ActionPerformed
+
+    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton4ActionPerformed
+
+    private void jRadioButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton5ActionPerformed
+
+    private void jRadioButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton6ActionPerformed
+
+    private void jRadioButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton7ActionPerformed
+
+    private void jRadioButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton8ActionPerformed
+
+    private void jRadioButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton9ActionPerformed
+
+    private void jRadioButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton10ActionPerformed
+
+    private void jRadioButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton11ActionPerformed
+
+    private void jRadioButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton12ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton12ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -276,25 +375,28 @@ public class Feedback extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
-    private javax.swing.JCheckBox jCheckBox10;
-    private javax.swing.JCheckBox jCheckBox11;
-    private javax.swing.JCheckBox jCheckBox12;
-    private javax.swing.JCheckBox jCheckBox13;
-    private javax.swing.JCheckBox jCheckBox14;
-    private javax.swing.JCheckBox jCheckBox15;
-    private javax.swing.JCheckBox jCheckBox16;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JCheckBox jCheckBox8;
-    private javax.swing.JCheckBox jCheckBox9;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton10;
+    private javax.swing.JRadioButton jRadioButton11;
+    private javax.swing.JRadioButton jRadioButton12;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButton4;
+    private javax.swing.JRadioButton jRadioButton5;
+    private javax.swing.JRadioButton jRadioButton6;
+    private javax.swing.JRadioButton jRadioButton7;
+    private javax.swing.JRadioButton jRadioButton8;
+    private javax.swing.JRadioButton jRadioButton9;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

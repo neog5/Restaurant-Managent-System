@@ -91,7 +91,7 @@ public class NewOrder extends javax.swing.JFrame {
         });
 
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jButton4.setText("Add Select");
+        jButton4.setText("Add Selected");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -116,7 +116,7 @@ public class NewOrder extends javax.swing.JFrame {
         jLabel12.setText("Quantity :");
 
         jTextField1.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(204, 204, 204));
+        jTextField1.setForeground(new java.awt.Color(51, 51, 51));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.setText("Search Item");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -137,7 +137,7 @@ public class NewOrder extends javax.swing.JFrame {
         jLabel3.setText("Total:");
 
         jTextField2.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(204, 204, 204));
+        jTextField2.setForeground(new java.awt.Color(51, 51, 51));
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField2.setText("Total Bill Amount");
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
@@ -195,11 +195,12 @@ public class NewOrder extends javax.swing.JFrame {
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)

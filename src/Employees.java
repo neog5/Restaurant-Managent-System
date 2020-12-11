@@ -133,7 +133,7 @@ public class Employees extends javax.swing.JFrame {
         });
 
         jTextField1.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(204, 204, 204));
+        jTextField1.setForeground(new java.awt.Color(51, 51, 51));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
