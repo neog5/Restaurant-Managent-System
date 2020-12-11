@@ -100,7 +100,7 @@
                 <Column editable="false" title="Employee ID" type="java.lang.Object"/>
                 <Column editable="false" title="Name" type="java.lang.Object"/>
                 <Column editable="true" title="Designation" type="java.lang.Object"/>
-                <Column editable="true" title="Date Of Birth" type="java.lang.Object"/>
+                <Column editable="false" title="Date Of Birth" type="java.lang.Object"/>
                 <Column editable="true" title="Address" type="java.lang.Object"/>
                 <Column editable="true" title="Phone Number" type="java.lang.Object"/>
                 <Column editable="true" title="Salary" type="java.lang.Object"/>
