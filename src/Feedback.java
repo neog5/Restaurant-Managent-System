@@ -1,3 +1,11 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -203,25 +211,28 @@ public class Feedback extends javax.swing.JFrame {
                             .addComponent(jLabel8))
                         .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField1)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jRadioButton1)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jRadioButton2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jRadioButton3)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jRadioButton4))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jRadioButton5)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jRadioButton6)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jRadioButton7)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jRadioButton8)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jRadioButton1)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jRadioButton2)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jRadioButton3)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jRadioButton4))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jRadioButton5)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jRadioButton6)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jRadioButton7)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jRadioButton8)))
+                                    .addGap(0, 0, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jRadioButton9)
                                 .addGap(18, 18, 18)
@@ -234,7 +245,7 @@ public class Feedback extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGap(36, 36, 36))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,13 +271,13 @@ public class Feedback extends javax.swing.JFrame {
                         .addComponent(jRadioButton7)
                         .addComponent(jRadioButton8)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jRadioButton9)
                         .addComponent(jRadioButton10)
                         .addComponent(jRadioButton11)
-                        .addComponent(jRadioButton12)))
+                        .addComponent(jRadioButton12))
+                    .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
@@ -288,7 +299,89 @@ public class Feedback extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        
+        
+        String fq = new String();
+        String clean = new String();
+        String ser = new String();
+        if(jRadioButton1.isSelected())  {
+            fq = "4";
+        }
+        else if(jRadioButton2.isSelected())  {
+            fq = "3";
+        }
+        else if(jRadioButton3.isSelected())  {
+            fq = "2";
+        }
+        else if(jRadioButton4.isSelected())  {
+            fq = "1";
+        }
+        else    {
+        JOptionPane.showMessageDialog(this, "Please Select all criteria");
+        }
+        
+        if(jRadioButton5.isSelected())  {
+            clean = "4";
+        }
+        else if(jRadioButton6.isSelected())  {
+            clean = "3";
+        }
+        else if(jRadioButton7.isSelected())  {
+            clean = "2";
+        }
+        else if(jRadioButton8.isSelected())  {
+            clean = "1";
+        }
+        else    {
+        JOptionPane.showMessageDialog(this, "Please Select all criteria");
+        }
+        
+        if(jRadioButton9.isSelected())  {
+            ser = "4";
+        }
+        else if(jRadioButton10.isSelected())  {
+            ser = "3";
+        }
+        else if(jRadioButton11.isSelected())  {
+            ser = "2";
+        }
+        else if(jRadioButton12.isSelected())  {
+            ser = "1";
+        }
+        else    {
+        JOptionPane.showMessageDialog(this, "Please Select all criteria");
+        }
+        if(((jRadioButton1.isSelected() || jRadioButton2.isSelected() || jRadioButton3.isSelected() ||jRadioButton4.isSelected()) &&
+           (jRadioButton5.isSelected() || jRadioButton6.isSelected() || jRadioButton7.isSelected() ||jRadioButton8.isSelected()) &&
+           (jRadioButton9.isSelected() || jRadioButton10.isSelected() || jRadioButton11.isSelected() ||jRadioButton12.isSelected()))) {
+        
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                String sug = jTextField1.getText();
+                PreparedStatement ps = con.prepareStatement("INSERT INTO feedback VALUES(?, ?, ?, ?)");
+                ps.setString(1, fq);
+                ps.setString(2, clean);
+                ps.setString(3, ser);
+                ps.setString(4, sug);
+                
+                ps.execute();
+                
+                JOptionPane.showMessageDialog(this, "Thanks for the  feedback (kiss emoji)");
+                /*new Employees().setVisible(true);
+                this.dispose();//to close the current jframe
+                */
+            } catch (SQLException ex) {
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Driver not initialized : ");
+            System.out.println(ex);
+        }       // TODO add your handling code here:
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
