@@ -143,9 +143,8 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setText("BABA KA DHABA");
 
         jTextField1.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(204, 204, 204));
+        jTextField1.setForeground(new java.awt.Color(51, 51, 51));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField1.setText("Search Menu By Name");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -285,6 +284,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        new Options().setVisible(true);
+        this.dispose();//to close the current jframe
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -293,6 +294,46 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String name =  jTextField1.getText();
+        
+        DefaultTableModel model = (DefaultTableModel)
+        jTable1.getModel();
+        int rows=model.getRowCount();
+        if (rows>0) {
+            for (int i=0; i<rows; i++)
+            model.removeRow(0);  // To remove all rows from
+        }
+        
+        if(name.isEmpty())  {
+            //jTable1.setRowText("");
+            JOptionPane.showMessageDialog(this,"Please enter name");
+        }   else    {
+            
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM menu WHERE dish LIKE ?");
+                ps.setString(1, "%" + name + "%");
+                ResultSet rs = ps.executeQuery();
+                
+                while(rs.next())   {
+                    String dishId = rs.getString("dish_id");
+                    String nam = rs.getString("dish");
+                    String cat = rs.getString("category");
+                    String pr = rs.getString("price");
+                    model.addRow(new Object[] {dishId, cat, nam, pr});
+                }
+            } catch (SQLException ex) {
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Driver not initialized : ");
+            System.out.println(ex);
+        }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
@@ -311,7 +352,13 @@ public class Menu extends javax.swing.JFrame {
                     
                     String dishID = jTextField4.getText();
                     String nam = jTextField3.getText();
+                    if(nam.isEmpty())   {
+                        JOptionPane.showMessageDialog(this, "Please enter Name");
+                    }
                     String price = jTextField2.getText();
+                    if(price.isEmpty())   {
+                        JOptionPane.showMessageDialog(this, "Please enter Price");
+                    }
                     String cate = new String();
                     int cat = jComboBox1.getSelectedIndex();
                     switch(cat) {
@@ -348,15 +395,15 @@ public class Menu extends javax.swing.JFrame {
                             break;
                     }
                     
+                    if(!price.isEmpty() && !nam.isEmpty())  {
                     ps.setString(1, nam);
                     ps.setString(2, price);
                     ps.setString(3, cate);
                     ps.setString(4, dishID);
                     
                     ps.execute();
-                    
                     hp();
-                    
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                 }
