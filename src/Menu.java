@@ -1,3 +1,14 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,7 +26,48 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
+        hp();
+        
     }
+    
+    
+    public void hp() {
+        
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM menu");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next())   {
+                    String dishId = rs.getString("dish_id");
+                    String nam = rs.getString("dish");
+                    String pr = rs.getString("price");
+                    String cat = rs.getString("category");
+                    //int sal = rs.getInt("sal");
+                    
+                    model.addRow(new Object[] {dishId, cat, nam, pr});
+                }
+                        
+            } catch (SQLException ex) {
+                Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+                jTextField4.setText("");
+                jTextField3.setText("");
+                jTextField2.setText("");
+                jComboBox1.setSelectedIndex(0);
+        
+    
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,14 +111,21 @@ public class Menu extends javax.swing.JFrame {
             new String [] {
                 "Item ID", "Item Category", "Item Name", "Rate"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setHeaderValue("Item ID");
-            jTable1.getColumnModel().getColumn(1).setHeaderValue("Item Category");
-            jTable1.getColumnModel().getColumn(2).setHeaderValue("Item Name");
-            jTable1.getColumnModel().getColumn(3).setHeaderValue("Rate");
-        }
 
         jButton2.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
         jButton2.setText("Back");
@@ -165,14 +224,14 @@ public class Menu extends javax.swing.JFrame {
                                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jComboBox1, 0, 300, Short.MAX_VALUE)
                                     .addComponent(jTextField4)
                                     .addComponent(jTextField3)
-                                    .addComponent(jTextField2)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(jTextField2))))
                         .addGap(20, 20, 20))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -213,7 +272,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(135, 135, 135)
@@ -242,11 +301,205 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        if(jTable1.getSelectedRow() >= 0) {
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                
+                try {
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                    PreparedStatement ps = con.prepareStatement("UPDATE menu SET dish = ?, price = ?, category = ? WHERE dish_id = ?");
+                    
+                    String dishID = jTextField4.getText();
+                    String nam = jTextField3.getText();
+                    String price = jTextField2.getText();
+                    String cate = new String();
+                    int cat = jComboBox1.getSelectedIndex();
+                    switch(cat) {
+                        case 0: 
+                            JOptionPane.showMessageDialog(this, "Please select a category");
+                            break;
+            
+                        case 1:
+                            cate = "Starters";
+                            break;
+            
+                        case 2:
+                            cate = "Seafood";
+                            break;
+            
+                        case 3:
+                            cate = "Mains";
+                            break;
+            
+                        case 4:
+                            cate = "Specials";
+                            break;
+            
+                        case 5:
+                            cate = "Rice";
+                            break;
+            
+                        case 6:
+                            cate = "Bread";
+                            break;
+                
+                        case 7:
+                            cate = "Desserts";
+                            break;
+                    }
+                    
+                    ps.setString(1, nam);
+                    ps.setString(2, price);
+                    ps.setString(3, cate);
+                    ps.setString(4, dishID);
+                    
+                    ps.execute();
+                    
+                    hp();
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else    {
+            JOptionPane.showMessageDialog(this, "Please select an Item to be updated");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        String itemId = jTextField4.getText();
+        int cat = jComboBox1.getSelectedIndex();
+        String cate = new String();
+        if(itemId.isEmpty())    {
+            JOptionPane.showMessageDialog(this,"Please enter an Item ID");
+        }
+        switch(cat) {
+            case 0: 
+                JOptionPane.showMessageDialog(this, "Please select a category");
+                break;
+            
+            case 1:
+                cate = "Starters";
+                break;
+            
+            case 2:
+                cate = "Seafood";
+                break;
+            
+            case 3:
+                cate = "Mains";
+                break;
+            
+            case 4:
+                cate = "Specials";
+                break;
+            
+            case 5:
+                cate = "Rice";
+                break;
+            
+            case 6:
+                cate = "Bread";
+                break;
+                
+            case 7:
+                cate = "Desserts";
+                break;
+            
+                
+        }
+        String name = jTextField3.getText();
+        if(name.isEmpty())    {
+            JOptionPane.showMessageDialog(this,"Please enter a name");
+        }
+        String price = jTextField2.getText();
+        if(itemId.isEmpty())    {
+            JOptionPane.showMessageDialog(this,"Please enter Price");
+        }
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps1 = con.prepareStatement("SELECT empID FROM employees WHERE empID = ?");
+                ps1.setString(1, itemId);
+                ResultSet rs = ps1.executeQuery();
+                
+                if(!rs.next())  {
+                PreparedStatement ps = con.prepareStatement("INSERT INTO menu VALUES(?, ?, ?, ?)");
+                ps.setString(1, itemId);
+                ps.setString(4, cate);
+                ps.setString(2, name);
+                ps.setString(3, price);
+                ps.execute();
+                
+                JOptionPane.showMessageDialog(null, "Record Inserted successfully");
+                hp();
+                }
+                
+                else    {
+                    JOptionPane.showMessageDialog(null, "Employee ID already exists");
+                
+                }
+                
+                
+            } catch (SQLException ex) {
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Driver not initialized : ");
+            System.out.println(ex);
+        }
+                                            
+
+
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        int r = jTable1.getSelectedRow();
+        if(r >= 0)   {
+            jTextField4.setText(jTable1.getValueAt(r,0).toString());
+            jTextField3.setText(jTable1.getValueAt(r,2).toString());
+            jTextField2.setText(jTable1.getValueAt(r,3).toString());
+            
+            switch(jTable1.getValueAt(r, 1).toString()) {
+                case "Starters" :
+                    jComboBox1.setSelectedIndex(1);
+                    break;
+                
+                case "Seafood" :
+                    jComboBox1.setSelectedIndex(2);
+                    break;
+                
+                case "Mains" :
+                    jComboBox1.setSelectedIndex(3);
+                    break;
+                
+                case "Specials" :
+                    jComboBox1.setSelectedIndex(4);
+                    break;
+                
+                case "Rice" :
+                    jComboBox1.setSelectedIndex(5);
+                    break;
+                
+                case "Bread" :
+                    jComboBox1.setSelectedIndex(6);
+                    break;
+                    
+                case "Desserts" :
+                    jComboBox1.setSelectedIndex(7);
+                    break;
+                
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
