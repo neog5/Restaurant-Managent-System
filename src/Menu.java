@@ -423,11 +423,12 @@ public class Menu extends javax.swing.JFrame {
         String cate = new String();
         if(itemId.isEmpty())    {
             JOptionPane.showMessageDialog(this,"Please enter an Item ID");
+            return;
         }
         switch(cat) {
             case 0: 
                 JOptionPane.showMessageDialog(this, "Please select a category");
-                break;
+                return;
             
             case 1:
                 cate = "Starters";
@@ -462,18 +463,22 @@ public class Menu extends javax.swing.JFrame {
         String name = jTextField3.getText();
         if(name.isEmpty())    {
             JOptionPane.showMessageDialog(this,"Please enter a name");
+            return;
         }
         String price = jTextField2.getText();
-        if(itemId.isEmpty())    {
+        if(price.isEmpty())    {
             JOptionPane.showMessageDialog(this,"Please enter Price");
+            return;
         }
+        
+        
         try {
             // TODO code application logic here
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             try {
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
-                PreparedStatement ps1 = con.prepareStatement("SELECT empID FROM employees WHERE empID = ?");
+                PreparedStatement ps1 = con.prepareStatement("SELECT dish_id FROM menu WHERE dish_id = ?");
                 ps1.setString(1, itemId);
                 ResultSet rs = ps1.executeQuery();
                 
@@ -485,12 +490,12 @@ public class Menu extends javax.swing.JFrame {
                 ps.setString(3, price);
                 ps.execute();
                 
-                JOptionPane.showMessageDialog(null, "Record Inserted successfully");
+                JOptionPane.showMessageDialog(this, "Record Inserted successfully");
                 hp();
                 }
                 
                 else    {
-                    JOptionPane.showMessageDialog(null, "Employee ID already exists");
+                    JOptionPane.showMessageDialog(this, "Item ID already exists");
                 
                 }
                 
@@ -502,9 +507,6 @@ public class Menu extends javax.swing.JFrame {
             System.out.println("Driver not initialized : ");
             System.out.println(ex);
         }
-                                            
-
-
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked

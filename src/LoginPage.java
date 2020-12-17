@@ -122,7 +122,8 @@ public class LoginPage extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Welcome");
             new Options().setVisible(true);
             this.dispose();//to close the current jframe
-        }   else    {
+        }   
+        else    {
             JOptionPane.showMessageDialog(null, "Invalid Cerdentials");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
