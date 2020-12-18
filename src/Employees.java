@@ -81,7 +81,6 @@ public class Employees extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Employees");
-        setPreferredSize(new java.awt.Dimension(886, 648));
 
         jTable1.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
