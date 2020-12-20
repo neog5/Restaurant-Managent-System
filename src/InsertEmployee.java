@@ -58,6 +58,7 @@ public class InsertEmployee extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Insert Employee");
+        setPreferredSize(new java.awt.Dimension(600, 790));
 
         jButton2.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
         jButton2.setText("Back");
@@ -156,6 +157,8 @@ public class InsertEmployee extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel12.setText("Confirm Password :");
 
+        jDateChooser1.setDateFormatString("yyyy-MM-dd");
+
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Select -", "What primary school did you attend?", "What were the last four digits of your childhood telephone number?", "In what town or city did your parents meet?", " " }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,19 +204,18 @@ public class InsertEmployee extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jPasswordField2, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField1)
-                                .addComponent(jTextField2)
-                                .addComponent(jTextField3)
-                                .addComponent(jTextField6)
-                                .addComponent(jTextField7)
-                                .addComponent(jTextField8)
-                                .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jComboBox1, 0, 1, Short.MAX_VALUE))))
+                            .addComponent(jPasswordField2, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1)
+                            .addComponent(jTextField2)
+                            .addComponent(jTextField3)
+                            .addComponent(jTextField6)
+                            .addComponent(jTextField7)
+                            .addComponent(jTextField8)
+                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox1, 0, 1, Short.MAX_VALUE)))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -312,7 +314,7 @@ public class InsertEmployee extends javax.swing.JFrame {
         // TODO add your handling code here:
         String empId = jTextField2.getText();
         String name = jTextField1.getText();
-        String dob = jTextField4.getText();
+        String dob = jDateChooser1.getDateFormatString();
         String phone = jTextField6.getText();
         String add = jTextField3.getText();
         String des = jTextField7.getText();
@@ -332,7 +334,7 @@ public class InsertEmployee extends javax.swing.JFrame {
                 PreparedStatement ps = con.prepareStatement("INSERT INTO employees VALUES(?, ?, ?, ?, ?, ?, ?)");
                 ps.setString(1, empId);
                 ps.setString(2, name);
-                ps.setString(3, dob);
+                //ps.setString(3, dob);
                 ps.setString(4, phone);
                 ps.setString(5, add);
                 ps.setString(6, des);
