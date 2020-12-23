@@ -1,3 +1,13 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -78,14 +88,14 @@ public class CustomerSignup extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel7.setText("DOB :");
 
-        jPasswordField1.setText("jPasswordField1");
+        jDateChooser1.setDateFormatString("yyyy-MM-dd");
+
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);
             }
         });
 
-        jPasswordField2.setText("jPasswordField1");
         jPasswordField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField2ActionPerformed(evt);
@@ -239,6 +249,45 @@ public class CustomerSignup extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String name = jTextField1.getText();
+        String ph = jTextField2.getText();
+        String dob  = ((JTextField)jDateChooser1.getDateEditor().getUiComponent()).getText(); //thanks Indunil
+        String pass = jPasswordField1.getText();
+        String cpass = jPasswordField2.getText();
+        String seq = String.valueOf(jComboBox1.getSelectedIndex());         
+        String ans = jTextField3.getText();
+        
+        if(name.isEmpty() || ph.isEmpty() || dob.isEmpty() || pass.isEmpty() || cpass.isEmpty() || seq.equals("0") || ans.isEmpty())  {
+            JOptionPane.showMessageDialog(this, "Fill every Field");
+        }
+        
+        else if(!pass.equals(cpass)){
+            JOptionPane.showMessageDialog(this, "Passwords don't match");
+        }
+        
+        else    {
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                
+                try {
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                    
+                    PreparedStatement ps = con.prepareStatement("INSERT INTO customers (name, ph, dob, password, secQues, secAns) values(?, ?, ?, ?, ?, ?)");
+                    ps.setString(1, name);
+                    ps.setString(2, ph);
+                    ps.setString(3, dob);
+                    ps.setString(4, pass);
+                    ps.setString(5, seq);
+                    ps.setString(6, ans);
+                    ps.execute();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CustomerSignup.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CustomerSignup.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
