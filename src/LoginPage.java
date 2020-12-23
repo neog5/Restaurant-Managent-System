@@ -156,12 +156,12 @@ public class LoginPage extends javax.swing.JFrame {
         String pass = new String(jPasswordField1.getPassword());
         String id = jTextField1.getText();
         if((id.equals("Aman") && pass.equals("aman123")) || (id.equals("Het") && pass.equals("het123")) || (id.equals("Akash") && pass.equals("akash123")) || (id.equals("Jatin") && pass.equals("jatin123"))) {
-            JOptionPane.showMessageDialog(null, "Welcome");
+            JOptionPane.showMessageDialog(this, "Welcome");
             new Options().setVisible(true);
             this.dispose();//to close the current jframe
         }   
         else    {
-            JOptionPane.showMessageDialog(null, "Invalid Cerdentials");
+            JOptionPane.showMessageDialog(this, "Invalid Cerdentials");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
