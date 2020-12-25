@@ -1,3 +1,14 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +26,39 @@ public class NewOrder extends javax.swing.JFrame {
      */
     public NewOrder() {
         initComponents();
+        refresh();
+    }
+    
+    void refresh()  {
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM menu");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next())   {
+                    String dishId = rs.getString("dish_id");
+                    String nam = rs.getString("dish");
+                    String pr = rs.getString("price");
+                    //int sal = rs.getInt("sal");
+                    
+                    model.addRow(new Object[] {dishId, nam, pr});
+                }
+                        
+            } catch (SQLException ex) {
+                Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        jTextField1.setText("");
+        
     }
 
     /**
@@ -47,15 +91,20 @@ public class NewOrder extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Item ID", "Item Name", "Rate"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel2.setFont(new java.awt.Font("Poppins SemiBold", 0, 20)); // NOI18N
@@ -71,10 +120,7 @@ public class NewOrder extends javax.swing.JFrame {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Item ID", "Item Name", "Rate", "Quantity", "Total"
@@ -106,6 +152,8 @@ public class NewOrder extends javax.swing.JFrame {
             }
         });
 
+        jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField6.setText("1");
         jTextField6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField6ActionPerformed(evt);
@@ -118,7 +166,6 @@ public class NewOrder extends javax.swing.JFrame {
         jTextField1.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(51, 51, 51));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField1.setText("Search Item");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -136,10 +183,11 @@ public class NewOrder extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Poppins SemiBold", 0, 20)); // NOI18N
         jLabel3.setText("Total:");
 
+        jTextField2.setEditable(false);
         jTextField2.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
         jTextField2.setForeground(new java.awt.Color(51, 51, 51));
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField2.setText("Total Bill Amount");
+        jTextField2.setText("0");
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
@@ -221,6 +269,8 @@ public class NewOrder extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        new Options().setVisible(true);
+        this.dispose();//to close the current jframe
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -229,10 +279,38 @@ public class NewOrder extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        int sel = jTable1.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        String q = jTextField6.getText();
+        String pr = jTable1.getValueAt(sel, 2).toString();  //object -> string -> int
+        int price = Integer.parseInt(pr);
+        int qua = Integer.parseInt(q);
+        price = price * qua;
+        
+        model.addRow(new Object[] {jTable1.getValueAt(sel, 0).toString(), jTable1.getValueAt(sel, 1).toString(), jTable1.getValueAt(sel, 2).toString(), q, String.valueOf(price)});
+        jTextField6.setText("1");
+        
+        int t = Integer.parseInt(jTextField2.getText());
+        t += price;
+        jTextField2.setText(String.valueOf(t));
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        int s = jTable2.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        if(s != -1) {
+               // remove selected row from the model
+               int k = Integer.parseInt(jTable2.getValueAt(s, 4).toString());
+               int t = Integer.parseInt(jTextField2.getText());
+               t = t-k;
+               jTextField2.setText(String.valueOf(t));
+               model.removeRow(s);
+               JOptionPane.showMessageDialog(this, "Selected row deleted successfully");
+        }
+        else    {
+               JOptionPane.showMessageDialog(this, "Please select a row");
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
@@ -245,6 +323,47 @@ public class NewOrder extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String name =  jTextField1.getText();
+        
+        DefaultTableModel model = (DefaultTableModel)
+        jTable1.getModel();
+        int rows=model.getRowCount();
+        if (rows>0) {
+            for (int i=0; i<rows; i++)
+            model.removeRow(0);  // To remove all rows from
+        }
+        
+        if(name.isEmpty())  {
+            //jTable1.setRowText("");
+            JOptionPane.showMessageDialog(this,"Please enter dish name");
+        }   else    {
+            
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM menu WHERE dish LIKE ?");
+                ps.setString(1, "%" + name + "%");
+                ResultSet rs = ps.executeQuery();
+                
+                while(rs.next())   {
+                    String dishId = rs.getString("dish_id");
+                    String nam = rs.getString("dish");
+                    String cat = rs.getString("category");
+                    String pr = rs.getString("price");
+                    model.addRow(new Object[] {dishId, nam, pr});
+                }
+            } catch (SQLException ex) {
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Driver not initialized : ");
+            System.out.println(ex);
+        }
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
