@@ -219,7 +219,7 @@ public class CustomerSignup extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new Options().setVisible(true);
+        new LoginPage().setVisible(true);
         this.dispose();//to close the current jframe
     }//GEN-LAST:event_jButton2ActionPerformed
 
