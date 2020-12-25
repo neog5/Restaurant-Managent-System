@@ -567,6 +567,30 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        int s = jTable1.getSelectedRow();
+        if(s != -1) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("DELETE FROM menu WHERE dish_id = ?");
+                String k = jTable1.getValueAt(s, 0).toString();
+                ps.setString(1, k);
+                ps.execute();
+                JOptionPane.showMessageDialog(this, "Selected row deleted successfully");
+            } catch (SQLException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        hp();
+        }
+        else    {
+               JOptionPane.showMessageDialog(this, "Please select a row");
+        }
+            
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**

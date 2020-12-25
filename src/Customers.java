@@ -58,6 +58,9 @@ public class Customers extends javax.swing.JFrame {
             Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
         }
     
+                jTextField4.setText("");
+                jTextField3.setText("");
+                jTextField2.setText("");
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -275,7 +278,7 @@ public class Customers extends javax.swing.JFrame {
                 ps1.setString(1, custId);
                 ResultSet rs = ps1.executeQuery();
                 if(!rs.next())   {
-                PreparedStatement ps = con.prepareStatement("INSERT INTO customers VALUES(?, ?, ?)");
+                PreparedStatement ps = con.prepareStatement("INSERT INTO customers (custID, name, ph) VALUES(?, ?, ?)");
                 ps.setString(1, custId);
                 ps.setString(2, name);
                 ps.setString(3, phone);
@@ -285,9 +288,6 @@ public class Customers extends javax.swing.JFrame {
                 
                 hp();
                 
-                jTextField4.setText("");
-                jTextField3.setText("");
-                jTextField2.setText("");
                 }
                 
                 else    {
@@ -381,6 +381,29 @@ public class Customers extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        int s = jTable1.getSelectedRow();
+        if(s != -1) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("DELETE FROM customers WHERE custID = ?");
+                String k = jTable1.getValueAt(s, 0).toString();
+                ps.setString(1, k);
+                ps.execute();
+                JOptionPane.showMessageDialog(this, "Selected row deleted successfully");
+            } catch (SQLException ex) {
+                Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        hp();
+        }
+        else    {
+               JOptionPane.showMessageDialog(this, "Please select a row");
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
