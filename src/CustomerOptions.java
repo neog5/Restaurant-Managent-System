@@ -15,6 +15,7 @@ public class CustomerOptions extends javax.swing.JFrame {
      */
     public CustomerOptions() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

@@ -1,5 +1,7 @@
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -19,6 +21,7 @@ public class LoginPage extends javax.swing.JFrame {
      */
     public LoginPage() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -155,6 +158,21 @@ public class LoginPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         String pass = new String(jPasswordField1.getPassword());
         String id = jTextField1.getText();
+        int sel = jComboBox1.getSelectedIndex();
+        if(sel == 0)  {
+            JOptionPane.showMessageDialog(this, "Select Login type");
+            return;
+        }
+        if(id.isEmpty())  {
+            JOptionPane.showMessageDialog(this, "Enter Username");                             
+            return;
+        }
+        if(pass.isEmpty())  {
+            JOptionPane.showMessageDialog(this, "Enter password");
+            return;
+        }
+        
+        if(sel == 1)    {
         if((id.equals("Aman") && pass.equals("aman123")) || (id.equals("Het") && pass.equals("het123")) || (id.equals("Akash") && pass.equals("akash123")) || (id.equals("Jatin") && pass.equals("jatin123"))) {
             JOptionPane.showMessageDialog(this, "Welcome");
             new Options().setVisible(true);
@@ -162,6 +180,40 @@ public class LoginPage extends javax.swing.JFrame {
         }   
         else    {
             JOptionPane.showMessageDialog(this, "Invalid Cerdentials");
+        }
+        }
+        else if(sel == 2)   {
+            //employee waala baaki hai
+        }
+        else if(sel == 3)   {
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                
+                try {
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                    
+                     PreparedStatement ps = con.prepareStatement("SELECT password FROM customers WHERE custID = ?");
+                     ps.setString(1, id);
+                     ResultSet rs = ps.executeQuery();
+                     if(rs.next())  {
+                         if(pass.equals(rs.getString("password")))  {
+                             JOptionPane.showMessageDialog(this, "Login Successful");
+                             new CustomerOptions().setVisible(true);
+                             this.dispose();
+                         }
+                         else   {
+                             JOptionPane.showMessageDialog(this, "Invalid Password");
+                         }
+                     }
+                     else   {
+                         JOptionPane.showMessageDialog(this, "Invalid Username");
+                     }
+                } catch (SQLException ex) {
+                    Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

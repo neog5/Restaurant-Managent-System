@@ -374,6 +374,7 @@ public class Menu extends javax.swing.JFrame {
                     if(price.isEmpty())   {
                         JOptionPane.showMessageDialog(this, "Please enter Price");
                     }
+                    //String cate = (String)jComboBox1.getSelectedItem();
                     String cate = new String();
                     int cat = jComboBox1.getSelectedIndex();
                     switch(cat) {
