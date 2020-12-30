@@ -286,13 +286,25 @@ public class NewOrder extends javax.swing.JFrame {
         int price = Integer.parseInt(pr);
         int qua = Integer.parseInt(q);
         price = price * qua;
+        String id = jTable1.getValueAt(sel, 0).toString();
         
-        model.addRow(new Object[] {jTable1.getValueAt(sel, 0).toString(), jTable1.getValueAt(sel, 1).toString(), jTable1.getValueAt(sel, 2).toString(), q, String.valueOf(price)});
-        jTextField6.setText("1");
-        
+        int n = jTable2.getRowCount();
         int t = Integer.parseInt(jTextField2.getText());
         t += price;
         jTextField2.setText(String.valueOf(t));
+        
+        for(int i = 0; i < n; i++)  {
+            if(id.equals(jTable2.getValueAt(i, 0).toString()))  {
+                int qua2 = Integer.parseInt(jTable2.getValueAt(i, 3).toString());
+                qua2 += qua;    //qua + qua2
+                jTable2.setValueAt(String.valueOf(qua2), i, 3);
+                return;
+            }
+        }
+        model.addRow(new Object[] {id, jTable1.getValueAt(sel, 1).toString(), jTable1.getValueAt(sel, 2).toString(), q, String.valueOf(price)});
+        jTextField6.setText("1");
+        
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
