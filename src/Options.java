@@ -166,6 +166,7 @@ public class Options extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -177,7 +178,7 @@ public class Options extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        new Employees().setVisible(true);
+        new EmployeesV2().setVisible(true);
         this.dispose();//to close the current jframe
     }//GEN-LAST:event_jButton3ActionPerformed
 

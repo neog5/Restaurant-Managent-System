@@ -1,3 +1,7 @@
+
+import java.sql.*;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,13 +12,19 @@
  *
  * @author jatin
  */
-public class UpdatePassword extends javax.swing.JFrame {
+public class InsertPassword extends javax.swing.JFrame {
 
     /**
      * Creates new form UpdatePassword
      */
-    public UpdatePassword() {
+    String[] s;
+    public InsertPassword() {
         initComponents();
+    }
+    
+    public InsertPassword(String val[]) {
+        initComponents();
+        s = val.clone();
     }
 
     /**
@@ -53,12 +63,6 @@ public class UpdatePassword extends javax.swing.JFrame {
         jLabel14.setText("Answer :");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Select -", "What primary school did you attend?", "What were the last four digits of your childhood telephone number?", "In what town or city did your parents meet?", "" }));
-
-        jPasswordField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField2ActionPerformed(evt);
-            }
-        });
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton1.setText("Confirm");
@@ -145,18 +149,61 @@ public class UpdatePassword extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPasswordField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField2ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String pass = jPasswordField2.getText();
+        String cpass = jPasswordField1.getText();
+        String secQues = (String)jComboBox1.getSelectedItem();
+        String secAns = jTextField8.getText();
+        if(pass.isEmpty() || cpass.isEmpty() || secAns.isEmpty() || secQues.equals("- Select -"))    {
+            JOptionPane.showMessageDialog(this, "Please enter all the fields");
+            return;
+        }
+        if(!pass.equals(cpass))  {
+            JOptionPane.showMessageDialog(this, "Passwords don't match");
+            return;
+        }
+        
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                
+                
+                PreparedStatement ps = con.prepareStatement("INSERT INTO employees VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                ps.setString(1, s[0]);
+                ps.setString(2, s[1]);
+                ps.setString(3, s[2]);
+                ps.setString(4, s[3]);
+                ps.setString(5, s[4]);
+                ps.setString(6, s[5]);
+                ps.setString(7, s[6]);
+                ps.setString(8, pass);
+                ps.setString(9, secQues);
+                ps.setString(10, secAns);
+                
+                ps.execute();
+                JOptionPane.showMessageDialog(this, "Record Inserted successfully");
+                this.dispose();
+                
+                
+                
+                
+
+            } catch (SQLException ex) {
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Driver not initialized : ");
+            System.out.println(ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new Options().setVisible(true);
-        this.dispose();//to close the current jframe
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -176,20 +223,21 @@ public class UpdatePassword extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UpdatePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UpdatePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UpdatePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UpdatePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UpdatePassword().setVisible(true);
+                new InsertPassword().setVisible(true);
             }
         });
     }

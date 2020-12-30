@@ -362,64 +362,13 @@ public class EmployeesV2 extends javax.swing.JFrame {
         String add = jTextField6.getText();
         String des = jTextField7.getText();
         String sal = jTextField5.getText();
-        String pass = jPasswordField2.getText();
-        String cpass = jPasswordField1.getText();
-        String secQues = (String)jComboBox1.getSelectedItem();
-        String secAns = jTextField8.getText();
-        
-        
-        if(empId.isEmpty() || name.isEmpty() || dob.isEmpty() || phone.isEmpty() || add.isEmpty() || des.isEmpty() || sal.isEmpty() || pass.isEmpty() || cpass.isEmpty() || jComboBox1.getSelectedIndex() == 0 || secAns.isEmpty())    {
+        if(empId.isEmpty() || name.isEmpty() || dob.isEmpty() || phone.isEmpty() || add.isEmpty() || des.isEmpty() || sal.isEmpty())    {
             JOptionPane.showMessageDialog(this, "Please enter all the fields");
             return;
         }
-        
-        if(!pass.equals(cpass))  {
-            JOptionPane.showMessageDialog(this, "Passwords don't match");
-            return;
-        }
-        
-        try {
-            // TODO code application logic here
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
-            try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
-                
-                PreparedStatement ps1 = con.prepareStatement("SELECT empID FROM employees WHERE empID = ?");
-                ps1.setString(1, empId);
-                ResultSet rs = ps1.executeQuery();
-                if(!rs.next())   {
-                PreparedStatement ps = con.prepareStatement("INSERT INTO employees VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                ps.setString(1, empId);
-                ps.setString(2, name);
-                ps.setString(3, dob);
-                ps.setString(4, phone);
-                ps.setString(5, add);
-                ps.setString(6, des);
-                ps.setString(7, sal);
-                ps.setString(8, pass);
-                ps.setString(9, secQues);
-                ps.setString(10, secAns);
-                
-                ps.execute();
-                JOptionPane.showMessageDialog(this, "Record Inserted successfully");
-                tableRefresh();
-                
-                }
-                
-                else    {
-                    JOptionPane.showMessageDialog(null, "Employee ID already exists");
-                
-                }
-                
-
-            } catch (SQLException ex) {
-            }
-            
-        } catch (ClassNotFoundException ex) {
-            System.out.println("Driver not initialized : ");
-            System.out.println(ex);
-        }
+        String[] s = {empId, name, dob, phone, add, des, sal};
+        new InsertPassword(s).setVisible(true);
+        tableRefresh();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
