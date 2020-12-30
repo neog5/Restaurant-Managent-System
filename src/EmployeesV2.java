@@ -1,3 +1,17 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +29,40 @@ public class EmployeesV2 extends javax.swing.JFrame {
      */
     public EmployeesV2() {
         initComponents();
+        tableRefresh();
+    }
+
+    public void tableRefresh() {
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM employees");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next())   {
+                    String empId = rs.getString("empID");
+                    String nam = rs.getString("name");
+                    String dob = rs.getString("dob");
+                    String ph = rs.getString("ph");
+                    //String add = rs.getString("address");
+                    String des = rs.getString("desig");
+                    //int sal = rs.getInt("sal");
+                    String s = rs.getString("salary");
+                    
+                    model.addRow(new Object[] {empId, nam, des, dob, ph, s});
+                }
+                        
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -79,18 +127,33 @@ public class EmployeesV2 extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Employee ID", "Name", "Designation", "DOB", "Address", "Phone Number", "Salary"
+                "Employee ID", "Name", "Designation", "DOB", "Phone Number", "Salary"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -126,20 +189,33 @@ public class EmployeesV2 extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel14.setText("Answer :");
 
+        jDateChooser1.setDateFormatString("yyyy-MM-dd");
+
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Select -", "What primary school did you attend?", "What were the last four digits of your childhood telephone number?", "In what town or city did your parents meet?", "" }));
-
-        jPasswordField1.setText("jPasswordField1");
-
-        jPasswordField2.setText("jPasswordField1");
 
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton3.setText("Insert");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton4.setText("Update");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton5.setText("Delete");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -276,6 +352,237 @@ public class EmployeesV2 extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String name =  jTextField1.getText();
+        
+        DefaultTableModel model = (DefaultTableModel)
+        jTable1.getModel();
+        int rows=model.getRowCount();
+        if (rows>0) {
+            for (int i=0; i<rows; i++)
+            model.removeRow(0);  // To remove all rows from
+        }
+        
+        if(name.isEmpty())  {
+            //jTable1.setRowText("");
+            JOptionPane.showMessageDialog(this,"Please enter name");
+            tableRefresh();
+            return;
+        }
+            
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM employees WHERE name LIKE ?");
+                ps.setString(1, "%" + name + "%");
+                ResultSet rs = ps.executeQuery();
+                
+                while(rs.next())   {
+                    String empId = rs.getString("empID");
+                    String nam = rs.getString("name");
+                    String dob = rs.getString("dob");
+                    String ph = rs.getString("ph");
+                    //String add = rs.getString("address");
+                    String des = rs.getString("desig");
+                    //int sal = rs.getInt("sal");
+                    String s = rs.getString("salary");
+                    
+                    model.addRow(new Object[] {empId, nam, des, dob, ph, s});
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String empId = jTextField2.getText();
+        String name = jTextField3.getText();
+        String dob = ((JTextField)jDateChooser1.getDateEditor().getUiComponent()).getText(); //thanks Indunil
+        String phone = jTextField4.getText();
+        String add = jTextField6.getText();
+        String des = jTextField7.getText();
+        String sal = jTextField5.getText();
+        String pass = jPasswordField2.getText();
+        String cpass = jPasswordField1.getText();
+        String secQues = (String)jComboBox1.getSelectedItem();
+        String secAns = jTextField8.getText();
+        
+        
+        if(empId.isEmpty() || name.isEmpty() || dob.isEmpty() || phone.isEmpty() || add.isEmpty() || des.isEmpty() || sal.isEmpty() || pass.isEmpty() || cpass.isEmpty() || jComboBox1.getSelectedIndex() == 0 || secAns.isEmpty())    {
+            JOptionPane.showMessageDialog(this, "Please enter all the fields");
+            return;
+        }
+        
+        if(!pass.equals(cpass))  {
+            JOptionPane.showMessageDialog(this, "Passwords don't match");
+            return;
+        }
+        
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                
+                PreparedStatement ps1 = con.prepareStatement("SELECT empID FROM employees WHERE empID = ?");
+                ps1.setString(1, empId);
+                ResultSet rs = ps1.executeQuery();
+                if(!rs.next())   {
+                PreparedStatement ps = con.prepareStatement("INSERT INTO employees VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                ps.setString(1, empId);
+                ps.setString(2, name);
+                ps.setString(3, dob);
+                ps.setString(4, phone);
+                ps.setString(5, add);
+                ps.setString(6, des);
+                ps.setString(7, sal);
+                ps.setString(8, pass);
+                ps.setString(9, secQues);
+                ps.setString(10, secAns);
+                
+                ps.execute();
+                JOptionPane.showMessageDialog(this, "Record Inserted successfully");
+                tableRefresh();
+                
+                }
+                
+                else    {
+                    JOptionPane.showMessageDialog(null, "Employee ID already exists");
+                
+                }
+                
+
+            } catch (SQLException ex) {
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Driver not initialized : ");
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        int r = jTable1.getSelectedRow();
+        if(r >= 0)   {
+            jTextField2.setText(jTable1.getValueAt(r,0).toString());
+            jTextField3.setText(jTable1.getValueAt(r,1).toString());
+            jTextField4.setText(jTable1.getValueAt(r,4).toString());
+            jTextField7.setText(jTable1.getValueAt(r,2).toString());
+            jTextField5.setText(jTable1.getValueAt(r,5).toString());
+            String date = jTable1.getValueAt(r,3).toString();
+            java.util.Date date2;
+            try {
+                date2 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                jDateChooser1.setDate(date2);
+            } catch (ParseException ex) {
+                Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT address FROM employees WHERE empID = ?");
+                ps.setString(1, jTable1.getValueAt(r,0).toString());
+                
+                ResultSet rs = ps.executeQuery();
+                if(rs.next())   {
+                    jTextField6.setText(rs.getString("address"));
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        if(jTable1.getSelectedRow() >= 0) {
+            String empId = jTextField2.getText();
+            String name = jTextField3.getText();
+            String dob = ((JTextField)jDateChooser1.getDateEditor().getUiComponent()).getText(); //thanks Indunil
+            String phone = jTextField4.getText();
+            String add = jTextField6.getText();
+            String des = jTextField7.getText();
+            String sal = jTextField5.getText();
+            if(empId.isEmpty() || name.isEmpty() || dob.isEmpty() || phone.isEmpty() || add.isEmpty() || des.isEmpty() || sal.isEmpty())    {
+                JOptionPane.showMessageDialog(this, "Please enter all the fields");
+                return;
+            }
+            
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                
+                try {
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                    PreparedStatement ps = con.prepareStatement("UPDATE employees SET name = ?, dob = ?, ph = ?, address = ?, desig = ?, salary = ? WHERE empID = ?");
+                    
+                    ps.setString(1, name);
+                    ps.setString(2, dob);
+                    ps.setString(3, phone);
+                    ps.setString(4, add);
+                    ps.setString(5, des);
+                    ps.setString(6, sal);
+                    ps.setString(7, empId);
+                    
+                    ps.execute();
+                    tableRefresh();
+                } catch (SQLException ex) {
+                    Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else    {
+            JOptionPane.showMessageDialog(this, "Please select an Item to be updated");
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        int s = jTable1.getSelectedRow();
+        if(s != -1) {
+        int result = JOptionPane.showConfirmDialog(this,"Sure? You want to Delete?", "Swing Tester",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+        if(result == JOptionPane.YES_OPTION){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("DELETE FROM employees WHERE empID = ?");
+                String k = jTable1.getValueAt(s, 0).toString();
+                ps.setString(1, k);
+                ps.execute();
+                JOptionPane.showMessageDialog(this, "Selected row deleted successfully");
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        tableRefresh();
+        }
+        else    {
+               JOptionPane.showMessageDialog(this, "Please select a row");
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
