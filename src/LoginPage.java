@@ -230,22 +230,22 @@ public class LoginPage extends javax.swing.JFrame {
                 try {
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
                     
-                     PreparedStatement ps = con.prepareStatement("SELECT password FROM customers WHERE custID = ?");
-                     ps.setString(1, id);
-                     ResultSet rs = ps.executeQuery();
-                     if(rs.next())  {
-                         if(pass.equals(rs.getString("password")))  {
-                             JOptionPane.showMessageDialog(this, "Login Successful");
-                             new CustomerOptions().setVisible(true);
-                             this.dispose();
-                         }
-                         else   {
-                             JOptionPane.showMessageDialog(this, "Invalid Password");
-                         }
-                     }
-                     else   {
-                         JOptionPane.showMessageDialog(this, "Invalid Username");
-                     }
+                    PreparedStatement ps = con.prepareStatement("SELECT password FROM customers WHERE custID = ?");
+                    ps.setString(1, id);
+                    ResultSet rs = ps.executeQuery();
+                    if(rs.next())  {
+                        if(pass.equals(rs.getString("password")))  {
+                            JOptionPane.showMessageDialog(this, "Login Successful");
+                            new CustomerOptions().setVisible(true);
+                            this.dispose();
+                        }
+                        else   {
+                            JOptionPane.showMessageDialog(this, "Invalid Password");
+                        }
+                    }
+                    else   {
+                        JOptionPane.showMessageDialog(this, "Invalid Username");
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
                 }
