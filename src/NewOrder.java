@@ -42,11 +42,12 @@ public class NewOrder extends javax.swing.JFrame {
                 ResultSet rs = ps.executeQuery();
                 while(rs.next())   {
                     String dishId = rs.getString("dish_id");
+                    String cat = rs.getString("category");
                     String nam = rs.getString("dish");
                     String pr = rs.getString("price");
                     //int sal = rs.getInt("sal");
                     
-                    model.addRow(new Object[] {dishId, nam, pr});
+                    model.addRow(new Object[] {dishId, cat, nam, pr});
                 }
                         
             } catch (SQLException ex) {
@@ -95,11 +96,11 @@ public class NewOrder extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Item ID", "Item Name", "Rate"
+                "Item ID", "Category", "Item Name", "Rate"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -291,7 +292,7 @@ public class NewOrder extends javax.swing.JFrame {
         int sel = jTable1.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         String q = jTextField6.getText();
-        String pr = jTable1.getValueAt(sel, 2).toString();  //object -> string -> int
+        String pr = jTable1.getValueAt(sel, 3).toString();  //object -> string -> int
         int price = Integer.parseInt(pr);
         int qua = Integer.parseInt(q);
         price = price * qua;
@@ -313,7 +314,7 @@ public class NewOrder extends javax.swing.JFrame {
                 return;
             }
         }
-        model.addRow(new Object[] {id, jTable1.getValueAt(sel, 1).toString(), jTable1.getValueAt(sel, 2).toString(), q, String.valueOf(price)});
+        model.addRow(new Object[] {id, jTable1.getValueAt(sel, 2).toString(), jTable1.getValueAt(sel, 3).toString(), q, String.valueOf(price)});
         jTextField6.setText("1");
         
         
@@ -349,6 +350,9 @@ public class NewOrder extends javax.swing.JFrame {
         // TODO add your handling code here:
         String name =  jTextField1.getText();
         
+        refresh();
+        
+        
         DefaultTableModel model = (DefaultTableModel)
         jTable1.getModel();
         int rows=model.getRowCount();
@@ -357,11 +361,7 @@ public class NewOrder extends javax.swing.JFrame {
             model.removeRow(0);  // To remove all rows from
         }
         
-        if(name.isEmpty())  {
-            //jTable1.setRowText("");
-            JOptionPane.showMessageDialog(this,"Please enter dish name");
-            refresh();
-        }   else    {
+        
             
         try {
             // TODO code application logic here
@@ -378,7 +378,7 @@ public class NewOrder extends javax.swing.JFrame {
                     String nam = rs.getString("dish");
                     String cat = rs.getString("category");
                     String pr = rs.getString("price");
-                    model.addRow(new Object[] {dishId, nam, pr});
+                    model.addRow(new Object[] {dishId, cat, nam, pr});
                 }
             } catch (SQLException ex) {
             }
@@ -387,8 +387,21 @@ public class NewOrder extends javax.swing.JFrame {
             System.out.println("Driver not initialized : ");
             System.out.println(ex);
         }
+        
+        String filter = (String)jComboBox2.getSelectedItem();
+        
+        int n = jTable1.getRowCount();
+        
+        if(filter.equals("All"))   {
+            return;
         }
-
+        for(int i = 0; i < n; i++)  {
+            if(!jTable1.getValueAt(i, 1).toString().equals(filter)) {
+                model.removeRow(i);
+                n--;
+                i--;
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed

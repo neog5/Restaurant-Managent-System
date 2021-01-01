@@ -60,7 +60,7 @@ public class Menu extends javax.swing.JFrame {
             Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-                jTextField4.setText("");
+                //jTextField4.setText("");
                 jTextField3.setText("");
                 jTextField2.setText("");
                 jComboBox1.setSelectedIndex(0);
@@ -362,17 +362,23 @@ public class Menu extends javax.swing.JFrame {
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
                     PreparedStatement ps = con.prepareStatement("UPDATE menu SET dish = ?, price = ?, category = ? WHERE dish_id = ?");
                     
-                    String dishID = jTextField4.getText();
+                    String dishID = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
                     String nam = jTextField3.getText();
                     if(nam.isEmpty())   {
                         JOptionPane.showMessageDialog(this, "Please enter Name");
+                        return;
                     }
                     String price = jTextField2.getText();
                     if(price.isEmpty())   {
                         JOptionPane.showMessageDialog(this, "Please enter Price");
+                        return;
                     }
-                    //String cate = (String)jComboBox1.getSelectedItem();
-                    String cate = new String();
+                    String cate = (String)jComboBox1.getSelectedItem();
+                    if(cate.equals("-Select-")) {
+                        JOptionPane.showMessageDialog(this, "Please select a category");
+                        return;
+                    }
+                    /*String cate = new String();
                     int cat = jComboBox1.getSelectedIndex();
                     switch(cat) {
                         case 0: 
@@ -406,9 +412,9 @@ public class Menu extends javax.swing.JFrame {
                         case 7:
                             cate = "Desserts";
                             break;
-                    }
+                    }*/
                     
-                    if(!price.isEmpty() && !nam.isEmpty())  {
+                    //if(!price.isEmpty() && !nam.isEmpty())  {
                     ps.setString(1, nam);
                     ps.setString(2, price);
                     ps.setString(3, cate);
@@ -416,7 +422,7 @@ public class Menu extends javax.swing.JFrame {
                     
                     ps.execute();
                     hp();
-                    }
+                    //}
                 } catch (SQLException ex) {
                     Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -532,7 +538,7 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         int r = jTable1.getSelectedRow();
         if(r >= 0)   {
-            jTextField4.setText(jTable1.getValueAt(r,0).toString());
+            //jTextField4.setText(jTable1.getValueAt(r,0).toString());
             jTextField3.setText(jTable1.getValueAt(r,2).toString());
             jTextField2.setText(jTable1.getValueAt(r,3).toString());
             

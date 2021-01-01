@@ -1,6 +1,8 @@
 
 import java.sql.*;
 import static java.time.zone.ZoneRulesProvider.refresh;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,8 +23,40 @@ public class NewOrderV2 extends javax.swing.JFrame {
      */
     public NewOrderV2() {
         initComponents();
+        refresh();
     }
-
+    void refresh()  {
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM menu");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next())   {
+                    String dishId = rs.getString("dish_id");
+                    String cat = rs.getString("category");
+                    String nam = rs.getString("dish");
+                    String pr = rs.getString("price");
+                    //int sal = rs.getInt("sal");
+                    
+                    model.addRow(new Object[] {dishId, cat, nam, pr});
+                }
+                        
+            } catch (SQLException ex) {
+                Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        jTextField1.setText("");
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,15 +66,14 @@ public class NewOrderV2 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField2 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jComboBox2 = new javax.swing.JComboBox<>();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jTextField6 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
@@ -48,19 +81,9 @@ public class NewOrderV2 extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTextField2.setEditable(false);
-        jTextField2.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(51, 51, 51));
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField2.setText("0");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -71,6 +94,8 @@ public class NewOrderV2 extends javax.swing.JFrame {
             }
         ));
         jScrollPane2.setViewportView(jTable2);
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Starters", "Seafood", "Mains", "Specials", "Rice", "Bread", "Desserts" }));
 
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton3.setText("Confirm");
@@ -107,18 +132,16 @@ public class NewOrderV2 extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel12.setText("Quantity :");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Starters", "Seafood", "Mains", "Specials", "Rice", "Bread", "Desserts" }));
-
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Item ID", "Item Name", "Rate"
+                "Item ID", "Category", "Item Name", "Rate"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -158,12 +181,23 @@ public class NewOrderV2 extends javax.swing.JFrame {
             }
         });
 
+        jTextField2.setEditable(false);
+        jTextField2.setFont(new java.awt.Font("Poppins Medium", 0, 13)); // NOI18N
+        jTextField2.setForeground(new java.awt.Color(51, 51, 51));
+        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField2.setText("0");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
@@ -197,12 +231,12 @@ public class NewOrderV2 extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -217,11 +251,11 @@ public class NewOrderV2 extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -230,16 +264,12 @@ public class NewOrderV2 extends javax.swing.JFrame {
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel12)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -250,7 +280,7 @@ public class NewOrderV2 extends javax.swing.JFrame {
         int sel = jTable1.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         String q = jTextField6.getText();
-        String pr = jTable1.getValueAt(sel, 2).toString();  //object -> string -> int
+        String pr = jTable1.getValueAt(sel, 3).toString();  //object -> string -> int
         int price = Integer.parseInt(pr);
         int qua = Integer.parseInt(q);
         price = price * qua;
@@ -272,7 +302,7 @@ public class NewOrderV2 extends javax.swing.JFrame {
                 return;
             }
         }
-        model.addRow(new Object[] {id, jTable1.getValueAt(sel, 1).toString(), jTable1.getValueAt(sel, 2).toString(), q, String.valueOf(price)});
+        model.addRow(new Object[] {id, jTable1.getValueAt(sel, 2).toString(), jTable1.getValueAt(sel, 3).toString(), q, String.valueOf(price)});
         jTextField6.setText("1");
 
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -307,6 +337,8 @@ public class NewOrderV2 extends javax.swing.JFrame {
         // TODO add your handling code here:
         String name =  jTextField1.getText();
 
+        refresh();
+
         DefaultTableModel model = (DefaultTableModel)
         jTable1.getModel();
         int rows=model.getRowCount();
@@ -315,44 +347,56 @@ public class NewOrderV2 extends javax.swing.JFrame {
             model.removeRow(0);  // To remove all rows from
         }
 
-        if(name.isEmpty())  {
-            //jTable1.setRowText("");
-            JOptionPane.showMessageDialog(this,"Please enter dish name");
-            refresh();
-        }   else    {
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
             try {
-                // TODO code application logic here
-                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM menu WHERE dish LIKE ?");
+                ps.setString(1, "%" + name + "%");
+                ResultSet rs = ps.executeQuery();
 
-                try {
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
-                    PreparedStatement ps = con.prepareStatement("SELECT * FROM menu WHERE dish LIKE ?");
-                    ps.setString(1, "%" + name + "%");
-                    ResultSet rs = ps.executeQuery();
-
-                    while(rs.next())   {
-                        String dishId = rs.getString("dish_id");
-                        String nam = rs.getString("dish");
-                        String cat = rs.getString("category");
-                        String pr = rs.getString("price");
-                        model.addRow(new Object[] {dishId, nam, pr});
-                    }
-                } catch (SQLException ex) {
+                while(rs.next())   {
+                    String dishId = rs.getString("dish_id");
+                    String nam = rs.getString("dish");
+                    String cat = rs.getString("category");
+                    String pr = rs.getString("price");
+                    model.addRow(new Object[] {dishId, cat, nam, pr});
                 }
+            } catch (SQLException ex) {
+            }
 
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Driver not initialized : ");
-                System.out.println(ex);
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Driver not initialized : ");
+            System.out.println(ex);
+        }
+
+        String filter = (String)jComboBox2.getSelectedItem();
+
+        int n = jTable1.getRowCount();
+
+        if(filter.equals("All"))   {
+            return;
+        }
+        for(int i = 0; i < n; i++)  {
+            if(!jTable1.getValueAt(i, 1).toString().equals(filter)) {
+                model.removeRow(i);
+                n--;
+                i--;
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new Options().setVisible(true);
+        new CustomerOptions().setVisible(true);
         this.dispose();//to close the current jframe
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
