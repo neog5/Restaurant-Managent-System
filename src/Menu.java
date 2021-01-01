@@ -170,6 +170,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel5.setText("Item Name :");
 
+        jTextField4.setEditable(false);
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField4ActionPerformed(evt);
@@ -205,7 +206,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Select-", "Starters", "Seafood", "Mains", "Specials", "Rice", "Bread", "Desserts" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Starters", "Seafood", "Mains", "Specials", "Rice", "Bread", "Desserts" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -298,6 +299,7 @@ public class Menu extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -314,6 +316,9 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         String name =  jTextField1.getText();
         
+        hp();
+        
+        
         DefaultTableModel model = (DefaultTableModel)
         jTable1.getModel();
         int rows=model.getRowCount();
@@ -322,10 +327,7 @@ public class Menu extends javax.swing.JFrame {
             model.removeRow(0);  // To remove all rows from
         }
         
-        if(name.isEmpty())  {
-            //jTable1.setRowText("");
-            JOptionPane.showMessageDialog(this,"Please enter name");
-        }   else    {
+        
             
         try {
             // TODO code application logic here
@@ -351,6 +353,20 @@ public class Menu extends javax.swing.JFrame {
             System.out.println("Driver not initialized : ");
             System.out.println(ex);
         }
+        
+        String filter = (String)jComboBox2.getSelectedItem();
+        
+        int n = jTable1.getRowCount();
+        
+        if(filter.equals("All"))   {
+            return;
+        }
+        for(int i = 0; i < n; i++)  {
+            if(!jTable1.getValueAt(i, 1).toString().equals(filter)) {
+                model.removeRow(i);
+                n--;
+                i--;
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -437,8 +453,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        String itemId = jTextField4.getText();
-        int cat = jComboBox1.getSelectedIndex();
+        //String itemId = jTextField4.getText();
+        /*int cat = jComboBox1.getSelectedIndex();
         String cate = new String();
         if(itemId.isEmpty())    {
             JOptionPane.showMessageDialog(this,"Please enter an Item ID");
@@ -478,8 +494,14 @@ public class Menu extends javax.swing.JFrame {
                 break;
             
                 
-        }
+        }*/
+        String cate = (String)jComboBox1.getSelectedItem();
         String name = jTextField3.getText();
+        
+        if(cate.equals("-Select-")) {
+            JOptionPane.showMessageDialog(this,"Please select category");
+            return;
+        }
         if(name.isEmpty())    {
             JOptionPane.showMessageDialog(this,"Please enter a name");
             return;
@@ -491,32 +513,32 @@ public class Menu extends javax.swing.JFrame {
         }
         
         
+        
         try {
             // TODO code application logic here
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             try {
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
-                PreparedStatement ps1 = con.prepareStatement("SELECT dish_id FROM menu WHERE dish_id = ?");
+                /*PreparedStatement ps1 = con.prepareStatement("SELECT dish_id FROM menu WHERE dish_id = ?");
                 ps1.setString(1, itemId);
                 ResultSet rs = ps1.executeQuery();
-                
-                if(!rs.next())  {
-                PreparedStatement ps = con.prepareStatement("INSERT INTO menu VALUES(?, ?, ?, ?)");
-                ps.setString(1, itemId);
-                ps.setString(4, cate);
-                ps.setString(2, name);
-                ps.setString(3, price);
+                */
+                //if(!rs.next())  {
+                PreparedStatement ps = con.prepareStatement("INSERT INTO menu (dish, price, category) VALUES(?, ?, ?)");
+                ps.setString(3, cate);
+                ps.setString(1, name);
+                ps.setString(2, price);
                 ps.execute();
                 
                 JOptionPane.showMessageDialog(this, "Record Inserted successfully");
                 hp();
-                }
+                /*}
                 
                 else    {
                     JOptionPane.showMessageDialog(this, "Item ID already exists");
                 
-                }
+                }*/
                 
                 
             } catch (SQLException ex) {

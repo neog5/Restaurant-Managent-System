@@ -288,6 +288,7 @@ public class Feedback extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -372,10 +373,9 @@ public class Feedback extends javax.swing.JFrame {
                 
                 ps.execute();
                 
-                JOptionPane.showMessageDialog(this, "Thanks for the  feedback (kiss emoji)");
-                /*new Employees().setVisible(true);
+                JOptionPane.showMessageDialog(this, "Thanks for the feedback (kiss emoji)");
+                new Options().setVisible(true);
                 this.dispose();//to close the current jframe
-                */
             } catch (SQLException ex) {
             }
             
