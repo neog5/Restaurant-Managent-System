@@ -28,10 +28,12 @@ public class ChangePassword extends javax.swing.JFrame {
     
     String id;
     int sel;
-    public ChangePassword(String ID, int k) {
+    ForgotPassword fp;
+    public ChangePassword(String ID, int k, ForgotPassword FP) {
         initComponents();
         id = ID;
         sel = k;
+        fp = FP;
     }
 
     /**
@@ -178,6 +180,7 @@ public class ChangePassword extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Password has been changed");
             
             new LoginPage().setVisible(true);
+            fp.dispose();
             this.dispose();
             
         } catch (ClassNotFoundException ex) {

@@ -296,7 +296,7 @@ public class CustomerSignup extends javax.swing.JFrame {
         String dob  = ((JTextField)jDateChooser1.getDateEditor().getUiComponent()).getText(); //thanks Indunil
         String pass = jPasswordField1.getText();
         String cpass = jPasswordField2.getText();
-        String seq = String.valueOf(jComboBox1.getSelectedIndex());         
+        String seq = (String)jComboBox1.getSelectedItem();
         String ans = jTextField3.getText();
         
         if(name.isEmpty() || ph.isEmpty() || dob.isEmpty() || pass.isEmpty() || cpass.isEmpty() || seq.equals("0") || ans.isEmpty() || username.isEmpty())  {

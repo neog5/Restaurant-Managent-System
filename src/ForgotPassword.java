@@ -232,7 +232,7 @@ public class ForgotPassword extends javax.swing.JFrame {
             ResultSet rs = ps.executeQuery();
             if(rs.next())   {
                 if(jTextField3.getText().equals(rs.getString("secAns")))    {
-                    new ChangePassword(ID, sel).setVisible(true);
+                    new ChangePassword(ID, sel, this).setVisible(true);
                 }
                 else    {
                     JOptionPane.showMessageDialog(this, "Invalid Answer");
