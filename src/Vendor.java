@@ -1,3 +1,11 @@
+
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,9 +21,43 @@ public class Vendor extends javax.swing.JFrame {
     /**
      * Creates new form Vendor
      */
+    //Connection con;
+    //PreparedStatement ps, ps1;
     public Vendor() {
         initComponents();
+        
+        refresh();
     }
+    
+    public void refresh()   {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM vendors");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next())   {
+            String vendorId = rs.getString("vendorID");
+            String nam = rs.getString("name");
+            String cat = rs.getString("category");
+            String ph = rs.getString("ph");
+                    
+            model.addRow(new Object[] {vendorId, nam, cat, ph});
+        }
+                        
+            } catch (SQLException ex) {
+                Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -67,18 +109,28 @@ public class Vendor extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Vendor ID", "Vendor Name", "Vendor Category", "Address", "Phone Number"
+                "Vendor ID", "Vendor Name", "Vendor Category", "Phone Number"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -86,9 +138,19 @@ public class Vendor extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton3.setText("Insert");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton4.setText("Update");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton5.setText("Delete");
@@ -131,6 +193,12 @@ public class Vendor extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,13 +216,7 @@ public class Vendor extends javax.swing.JFrame {
                             .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, 300, Short.MAX_VALUE)
                             .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -173,7 +235,7 @@ public class Vendor extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
+                        .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
@@ -199,6 +261,7 @@ public class Vendor extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -213,7 +276,218 @@ public class Vendor extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        int s = jTable1.getSelectedRow();
+        if(s != -1) {
+        int result = JOptionPane.showConfirmDialog(this,"Sure? You want to Delete?", "Swing Tester",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+        if(result == JOptionPane.YES_OPTION){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("DELETE FROM vendors WHERE vendorID = ?");
+                String k = jTable1.getValueAt(s, 0).toString();
+                ps.setString(1, k);
+                ps.execute();
+                JOptionPane.showMessageDialog(this, "Selected row deleted successfully");
+            } catch (SQLException ex) {
+                Logger.getLogger(Vendor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Vendor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        refresh();
+        }
+        else    {
+            JOptionPane.showMessageDialog(this, "Please select a row");
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String cate = (String)jComboBox1.getSelectedItem();
+        String name = jTextField3.getText();
+        String vendorID = jTextField2.getText();
+        String add = jTextField6.getText();
+        String ph = jTextField4.getText();
+        
+        if(name.isEmpty() || ph.isEmpty() || add.isEmpty() || vendorID.isEmpty())    {
+            JOptionPane.showMessageDialog(this,"Please enter all fields");
+            return;
+        }
+        if(cate.equals("- Select -")) {
+            JOptionPane.showMessageDialog(this,"Please select category");
+            return;
+        }
+        
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps1 = con.prepareStatement("SELECT vendorID FROM vendors WHERE vendorID = ?");
+                ps1.setString(1, vendorID);
+                ResultSet rs = ps1.executeQuery();
+                
+                if(!rs.next())  {
+                    PreparedStatement ps = con.prepareStatement("INSERT INTO vendors VALUES(?, ?, ?, ?, ?)");
+                    ps.setString(1, vendorID);
+                    ps.setString(2, name);
+                    ps.setString(3, cate);
+                    ps.setString(4, add);
+                    ps.setString(5, ph);
+                    ps.execute();
+                
+                    JOptionPane.showMessageDialog(this, "Record Inserted successfully");
+                    refresh();
+                }
+                
+                else    {
+                    JOptionPane.showMessageDialog(this, "Item ID already exists");
+                
+                }
+                
+                
+            } catch (SQLException ex) {
+            }
+            
+        } catch (ClassNotFoundException ex) {
+        }
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        if(jTable1.getSelectedRow() >= 0) {
+            String cate = (String)jComboBox1.getSelectedItem();
+            String name = jTextField3.getText();
+            String vendorID = jTextField2.getText();
+            String add = jTextField6.getText();
+            String ph = jTextField4.getText();
+        
+            if(name.isEmpty() || ph.isEmpty() || add.isEmpty() || vendorID.isEmpty())    {
+                JOptionPane.showMessageDialog(this,"Please enter all fields");
+                return;
+            }
+            if(cate.equals("- Select -")) {
+                JOptionPane.showMessageDialog(this,"Please select category");
+                return;
+            }
+        
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                
+                try {
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                    PreparedStatement ps = con.prepareStatement("UPDATE vendors SET name = ?, category = ?, address = ?, ph = ? WHERE vendorID = ?");
+                    
+                    ps.setString(1, name);
+                    ps.setString(2, cate);
+                    ps.setString(3, add);
+                    ps.setString(4, ph);
+                    ps.setString(5, vendorID);
+                    
+                    ps.execute();
+                    refresh();
+                } catch (SQLException ex) {
+                    Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else    {
+            JOptionPane.showMessageDialog(this, "Please select an Item to be updated");
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        int r = jTable1.getSelectedRow();
+        if(r >= 0)   {
+            jTextField2.setText(jTable1.getValueAt(r,0).toString());
+            jTextField3.setText(jTable1.getValueAt(r,1).toString());
+            jTextField4.setText(jTable1.getValueAt(r,3).toString());
+            
+            switch(jTable1.getValueAt(r, 2).toString()) {
+                case "Grocery" :
+                    jComboBox1.setSelectedIndex(1);
+                    break;
+                
+                case "Dairy" :
+                    jComboBox1.setSelectedIndex(2);
+                    break;
+                
+                case "Spices" :
+                    jComboBox1.setSelectedIndex(3);
+                    break;
+            }
+            
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT address FROM vendors WHERE vendorID = ?");
+                ps.setString(1, jTable1.getValueAt(r,0).toString());
+                
+                ResultSet rs = ps.executeQuery();
+                if(rs.next())   {
+                    jTextField6.setText(rs.getString("address"));
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeesV2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String name =  jTextField1.getText();
+        
+        DefaultTableModel model = (DefaultTableModel)
+        jTable1.getModel();
+        int rows=model.getRowCount();
+        if (rows>0) {
+            for (int i=0; i<rows; i++)
+            model.removeRow(0);  // To remove all rows from
+        }
+        
+        if(name.isEmpty())  {
+            //jTable1.setRowText("");
+            JOptionPane.showMessageDialog(this,"Please enter name");
+            refresh();
+            return;
+        }
+            
+        try {
+            // TODO code application logic here
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM vendors WHERE name LIKE ?");
+                ps.setString(1, "%" + name + "%");
+                ResultSet rs = ps.executeQuery();
+                
+                while(rs.next())   {
+                    String vendorId = rs.getString("vendorID");
+                    String nam = rs.getString("name");
+                    String cat = rs.getString("category");
+                    String ph = rs.getString("ph");
+                    model.addRow(new Object[] {vendorId, nam, cat, ph});
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Vendor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Vendor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
