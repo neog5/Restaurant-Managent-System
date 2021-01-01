@@ -1,7 +1,9 @@
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +27,6 @@ public class CustomerSignup extends javax.swing.JFrame {
      */
     public CustomerSignup() {
         initComponents();
-        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -59,6 +60,7 @@ public class CustomerSignup extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
 
         jScrollPane1.setViewportView(jEditorPane1);
 
@@ -154,6 +156,13 @@ public class CustomerSignup extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton3.setText("Check Availability");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -203,6 +212,8 @@ public class CustomerSignup extends javax.swing.JFrame {
                                     .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel10)
                                         .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(133, 133, 133))))
         );
@@ -218,7 +229,9 @@ public class CustomerSignup extends javax.swing.JFrame {
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -256,6 +269,7 @@ public class CustomerSignup extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -307,6 +321,10 @@ public class CustomerSignup extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Passwords don't match");
         }
         
+        else if(jLabel10.getText().equals("Not Available")) {
+            JOptionPane.showMessageDialog(this, "Username not available");
+        }
+        
         else    {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -340,6 +358,35 @@ public class CustomerSignup extends javax.swing.JFrame {
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String id = jTextField4.getText();
+        if(id.isEmpty())    {
+            JOptionPane.showMessageDialog(this, "Please enter a username");
+            return;
+        }
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+            PreparedStatement ps = con.prepareStatement("SELECT custID FROM customers WHERE custID = ?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())   {
+                jLabel10.setText("Not available");
+                jLabel10.setForeground(Color.red);
+                return;
+            }
+            jLabel10.setText("Available");
+            jLabel10.setForeground(Color.GREEN);
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CustomerSignup.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerSignup.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -383,6 +430,7 @@ public class CustomerSignup extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JEditorPane jEditorPane1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

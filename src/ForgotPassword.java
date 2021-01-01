@@ -281,6 +281,9 @@ public class ForgotPassword extends javax.swing.JFrame {
                     jTextField4.setText(ph);
                     jTextField5.setText(rs.getString("secQues"));
                 }
+                else    {
+                    JOptionPane.showMessageDialog(this, "Record not found");
+                }
                 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ForgotPassword.class.getName()).log(Level.SEVERE, null, ex);
@@ -291,7 +294,7 @@ public class ForgotPassword extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        new Options().setVisible(true);
+        new LoginPage().setVisible(true);
         this.dispose();//to close the current jframe
     }//GEN-LAST:event_jButton5ActionPerformed
 

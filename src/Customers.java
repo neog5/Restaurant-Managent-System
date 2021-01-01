@@ -255,10 +255,34 @@ public class Customers extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        String custId = jTextField4.getText();
+        String name = jTextField3.getText();
+        String phone = jTextField2.getText();
+        
+        if(custId.isEmpty() || name.isEmpty() || phone.isEmpty())   {
+            JOptionPane.showMessageDialog(this, "Please enter all the fields");
+            return;
+        }
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rms", "root", "");
+            PreparedStatement ps = con.prepareStatement("UPDATE customers SET name = ?, ph = ? WHERE custID = ?");
+            ps.setString(3, custId);
+            ps.setString(1, name);
+            ps.setString(2, phone);
+            ps.execute();
+            hp();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -267,6 +291,10 @@ public class Customers extends javax.swing.JFrame {
         String name = jTextField3.getText();
         String phone = jTextField2.getText();
         
+        if(custId.isEmpty() || name.isEmpty() || phone.isEmpty())   {
+            JOptionPane.showMessageDialog(this, "Please enter all the fields");
+            return;
+        }
         try {
             // TODO code application logic here
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -331,7 +359,9 @@ public class Customers extends javax.swing.JFrame {
         if(name.isEmpty())  {
             //jTable1.setRowText("");
             JOptionPane.showMessageDialog(this,"Please enter name");
-        }   else    {
+            hp();
+            return;
+        }   
             
         try {
             // TODO code application logic here
@@ -357,8 +387,7 @@ public class Customers extends javax.swing.JFrame {
             System.out.println("Driver not initialized : ");
             System.out.println(ex);
         }
-        }
-    
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

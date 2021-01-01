@@ -265,6 +265,7 @@ public class NewOrder extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -297,7 +298,10 @@ public class NewOrder extends javax.swing.JFrame {
             if(id.equals(jTable2.getValueAt(i, 0).toString()))  {
                 int qua2 = Integer.parseInt(jTable2.getValueAt(i, 3).toString());
                 qua2 += qua;    //qua + qua2
+                int price2 = Integer.parseInt(jTable2.getValueAt(i, 4).toString());
+                price2 += price;
                 jTable2.setValueAt(String.valueOf(qua2), i, 3);
+                jTable2.setValueAt(String.valueOf(price2), i, 4);
                 return;
             }
         }
@@ -318,7 +322,7 @@ public class NewOrder extends javax.swing.JFrame {
                t = t-k;
                jTextField2.setText(String.valueOf(t));
                model.removeRow(s);
-               JOptionPane.showMessageDialog(this, "Selected row deleted successfully");
+               //JOptionPane.showMessageDialog(this, "Selected row deleted successfully");
         }
         else    {
                JOptionPane.showMessageDialog(this, "Please select a row");
@@ -348,6 +352,7 @@ public class NewOrder extends javax.swing.JFrame {
         if(name.isEmpty())  {
             //jTable1.setRowText("");
             JOptionPane.showMessageDialog(this,"Please enter dish name");
+            refresh();
         }   else    {
             
         try {

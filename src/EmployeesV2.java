@@ -367,7 +367,7 @@ public class EmployeesV2 extends javax.swing.JFrame {
             return;
         }
         String[] s = {empId, name, dob, phone, add, des, sal};
-        new InsertPassword(s).setVisible(true);
+        new InsertPassword(s, this).setVisible(true);
         tableRefresh();
     }//GEN-LAST:event_jButton3ActionPerformed
 

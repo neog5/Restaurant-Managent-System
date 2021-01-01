@@ -21,10 +21,11 @@ public class InsertPassword extends javax.swing.JFrame {
     public InsertPassword() {
         initComponents();
     }
-    
-    public InsertPassword(String val[]) {
+    EmployeesV2 ev;
+    public InsertPassword(String val[], EmployeesV2 EV) {
         initComponents();
         s = val.clone();
+        ev = EV;
     }
 
     /**
@@ -186,12 +187,9 @@ public class InsertPassword extends javax.swing.JFrame {
                 
                 ps.execute();
                 JOptionPane.showMessageDialog(this, "Record Inserted successfully");
+                ev.tableRefresh();
                 this.dispose();
                 
-                
-                
-                
-
             } catch (SQLException ex) {
             }
             
