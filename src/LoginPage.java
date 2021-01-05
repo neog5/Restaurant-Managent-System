@@ -127,7 +127,7 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel6.setText("jLabel2");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, -1));
 
-        setBounds(0, 0, 832, 639);
+        setBounds(0, 0, 810, 604);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
